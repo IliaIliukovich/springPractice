@@ -25,4 +25,12 @@ public class ClientController {
         clients.add(new Client(UUID.randomUUID().toString(), "Hoffmann", "Clara", "DE012345678", "c.hoffmann@example.com", "Bremen, Germany", "+49 421 1234567", ClientStatus.ACTIVE));
     }
 
+    // GET /client/all
+
+    // GET /client/uuid
+
+    // GET /client?name=Anna
+
+    // GET /client/search?surname=W&address=Germany // search by surname starting with letter and address containing
+
 }
