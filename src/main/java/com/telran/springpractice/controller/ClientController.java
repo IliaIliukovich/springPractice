@@ -33,4 +33,8 @@ public class ClientController {
 
     // GET /client/search?surname=W&address=Germany // search by surname starting with letter and address containing
 
+    // POST /client create new client
+
+    // DELETE /client delete client
+
 }
