@@ -1,0 +1,7 @@
+GET /client/all
+
+GET /client/uuid
+
+GET /client?name=Anna
+
+GET /client/search?surname=W&address=Germany // search by surname starting with letter and address containing

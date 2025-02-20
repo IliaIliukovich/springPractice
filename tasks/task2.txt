@@ -1,0 +1,7 @@
+POST /client create new client  createClient(@RequestBody client)
+
+DELETE /client delete client
+
+PUT update client
+
+PATCH change client address
