@@ -5,3 +5,11 @@ DELETE /client delete client
 PUT update client
 
 PATCH change client address
+
+Hometask:
+
+delete all inactive
+
+if in clients address field is null set "Not provided"
+
+update all client status to provided by (@RequestParam status)
