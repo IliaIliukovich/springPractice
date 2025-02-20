@@ -6,10 +6,10 @@ PUT update client
 
 PATCH change client address
 
-Hometask:
+Hometask - make REST API method for the following:
 
-delete all inactive
+    - delete all inactive clients
 
-if in clients address field is null set "Not provided"
+    - if in clients address field is null set "Not provided"
 
-update all client status to provided by (@RequestParam status)
+    - update all client status to provided by (@RequestParam status)
