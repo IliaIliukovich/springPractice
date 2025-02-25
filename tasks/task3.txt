@@ -1,0 +1,18 @@
+В отдельном новом Spring Boot проекте создайте класс Order с полями item и price. Добавьте бин в свой файл конфигурации.
+Создайте класс PaymentGateway, в котором будет присутствовать поле Order.
+
+public class PaymentGateway {
+
+
+    private Order order;
+
+    @Override
+    public String toString(){
+        return "ordering "+this.order.getItem()+" | price: "+this.order.getPrice();
+    }
+}
+
+Выполните шаги по конфигурации бинов так, как была показано на уроке:
+а) С применением xml конфигурации
+б) С применением java-конфигурации и @Autowired
+Запустите проект и продемонстрируйте работу бинов.
