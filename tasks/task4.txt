@@ -1,0 +1,33 @@
+1. Создать maven-проект с одним классом
+- проверить запуск всех maven целей
+- собрать jar и найти его в файловой системе
+- сделать jar запускаемым и запустить его из командной строки
+2. Скачать проект https://github.com/IliaIliukovich/mavenMultiModuleExample
+- открыть в среде разработки, изучить его устройство
+- запустить тесты
+- проверить, как связаны модули
+- проверить запуск всех maven целей
+- собрать jar и найти его в файловой системе
+3. В maven-проекте с одним классом подключить зависимость от DesktopApp модуля
+- вызвать метод app() класса DesktopApp.java
+- запустить из командной строки
+
+<!-- зависимость для сборки выполняемого JAR в maven проекте -->
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>3.3.0</version>
+			<configuration>
+				<archive>
+					<manifest>
+						<addClasspath>true</addClasspath>
+						<classpathPrefix>lib/</classpathPrefix>
+						<mainClass>com.telran.Main</mainClass>
+					</manifest>
+				</archive>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
