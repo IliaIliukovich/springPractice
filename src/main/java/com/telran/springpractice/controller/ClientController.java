@@ -2,6 +2,9 @@ package com.telran.springpractice.controller;
 
 import com.telran.springpractice.entity.Client;
 import com.telran.springpractice.entity.ClientStatus;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,113 @@ public class ClientController {
         clients.add(new Client(UUID.randomUUID().toString(), "Wagner", "Julia", "DE678901234", "j.wagner@example.com", "Dresden, Germany", "+49 351 8765432", ClientStatus.ACTIVE));
         clients.add(new Client(UUID.randomUUID().toString(), "Becker", "Anna", "DE789012345", "p.becker@example.com", "Leipzig, Germany", "+49 341 7654321", ClientStatus.INACTIVE));
         clients.add(new Client(UUID.randomUUID().toString(), "Hoffmann", "Clara", "DE012345678", "c.hoffmann@example.com", null, "+49 421 1234567", ClientStatus.ACTIVE));
+    }
+
+    @GetMapping
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    @GetMapping("{uuid}")
+    public Client getClientsByUUID(@PathVariable String uuid) {
+        for (Client client : clients) {
+            if (client.getId().equals(uuid)) {
+                return client;
+            }
+        }
+        return null;
+    }
+
+    @GetMapping("search")
+    public List<Client> getClientsByName(@RequestParam String name) {
+        ArrayList<Client> clientList = new ArrayList<>();
+        for (Client client : clients) {
+            if (client.getFirstName().toLowerCase().equals(name.toLowerCase())) {
+                clientList.add(client);
+            }
+        }
+        return clientList;
+    }
+
+    @GetMapping("searchByAddress")
+    public List<Client> getSurnameAddressClients(@RequestParam String surnameChar, @RequestParam String address) {
+        List<Client> result = new ArrayList<>();
+        for (Client client : clients) {
+            if (client.getLastName().startsWith(surnameChar) && client.getAddress().contains(address)) {
+                result.add(client);
+            }
+        }
+        return result;
+    }
+
+    @PostMapping
+    public Client createClient(@RequestBody Client client) {
+        clients.add(client);
+        return client;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteClient(@PathVariable String id) {
+        boolean res = clients.removeIf(client -> client.getId().equals(id));
+        if (res) {
+            return new ResponseEntity<>("Client with id " + id + " was deleted", HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Client with id " + id + " was not deleted", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateClient(@RequestBody Client client) {
+        for (Client c : clients) {
+            if (c.getId().equals(client.getId())) {
+                c.setFirstName(client.getFirstName());
+                c.setLastName(client.getLastName());
+                c.setEmail(client.getEmail());
+                c.setPhone(client.getPhone());
+                c.setAddress(client.getAddress());
+                c.setStatus(client.getStatus());
+                return new ResponseEntity<>("Client with id " + client.getId() + " updated successfully", HttpStatus.ACCEPTED);
+            }
+        }
+        return new ResponseEntity<>("Client with id " + client.getId() + " not found", HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/patch")
+    public ResponseEntity<Void> patchClient(@RequestParam String id, @RequestParam String address) {
+        for (Client c : clients) {
+            if (c.getId().equals(id)) {
+                c.setAddress(address);
+                return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/deleteAllInactive")
+    public ResponseEntity<String> deleteAllInactiveClients() {
+        boolean res = clients.removeIf(client -> client.getStatus().equals(ClientStatus.INACTIVE));
+        if (res) {
+            return new ResponseEntity<>("All client with status \" + ClientStatus.INACTIVE + \" deleted successfully", HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("Delete error", HttpStatus.CONFLICT);
+    }
+
+    @PatchMapping("/whenAddressIsNull")
+    public ResponseEntity<String> whenAddressIsNull() {
+        int count =0;
+        for (Client client : clients) {
+            if (client.getAddress() == null) {
+                client.setAddress("Not provided");
+                count++;
+            }
+        }
+        return new ResponseEntity<>(count + " Addresses replaced on 'Not provided'", HttpStatus.ACCEPTED);
+    }
+
+    @PatchMapping("/updateAllStatus")
+    public String updateAllStatus(@RequestParam ClientStatus status) {
+        clients.forEach( client -> client.setStatus(status));
+        return "All client status updated '" + status +"' successfully";
     }
 
 }
