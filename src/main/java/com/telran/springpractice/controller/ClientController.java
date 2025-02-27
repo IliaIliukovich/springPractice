@@ -44,6 +44,28 @@ public class ClientController {
         return clients.stream().filter(client -> client.getFirstName().equals(name)).toList();
     }
 
+    @GetMapping("search")
+    public List<Client> getClientsByName(@RequestParam String name) {
+        ArrayList<Client> clientList = new ArrayList<>();
+        for (Client client : clients) {
+            if (client.getFirstName().toLowerCase().equals(name.toLowerCase())) {
+                clientList.add(client);
+            }
+        }
+        return clientList;
+    }
+
+    @GetMapping("searchByAddress")
+    public List<Client> getSurnameAddressClients(@RequestParam String surnameChar, @RequestParam String address) {
+        List<Client> result = new ArrayList<>();
+        for (Client client : clients) {
+            if (client.getLastName().startsWith(surnameChar) && client.getAddress().contains(address)) {
+                result.add(client);
+            }
+        }
+        return result;
+    }
+
     @PostMapping
     public ResponseEntity<Client> addClient(@RequestBody Client client) {
         client.setId(UUID.randomUUID().toString());
@@ -81,10 +103,49 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PatchMapping("/patch")
+    public ResponseEntity<Void> patchClient(@RequestParam String id, @RequestParam String address) {
+        for (Client c : clients) {
+            if (c.getId().equals(id)) {
+                c.setAddress(address);
+                return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/whenAddressIsNull")
+    public ResponseEntity<String> whenAddressIsNull() {
+        int count =0;
+        for (Client client : clients) {
+            if (client.getAddress() == null) {
+                client.setAddress("Not provided");
+                count++;
+            }
+        }
+        return new ResponseEntity<>(count + " Addresses replaced on 'Not provided'", HttpStatus.ACCEPTED);
+    }
+
+    @PatchMapping("/updateAllStatus")
+    public String updateAllStatus(@RequestParam ClientStatus status) {
+        clients.forEach( client -> client.setStatus(status));
+        return "All client status updated '" + status +"' successfully";
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
         clients.removeIf(client -> client.getId().equals(id));
         return ResponseEntity.accepted().build();
+    }
+
+
+    @DeleteMapping("/deleteAllInactive")
+    public ResponseEntity<String> deleteAllInactiveClients() {
+        boolean res = clients.removeIf(client -> client.getStatus().equals(ClientStatus.INACTIVE));
+        if (res) {
+            return new ResponseEntity<>("All client with status \" + ClientStatus.INACTIVE + \" deleted successfully", HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>("Delete error", HttpStatus.CONFLICT);
     }
 
 }
