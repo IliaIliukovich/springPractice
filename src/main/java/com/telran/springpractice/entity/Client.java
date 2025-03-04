@@ -1,5 +1,6 @@
 package com.telran.springpractice.entity;
 
+import com.telran.springpractice.entity.enums.ClientStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

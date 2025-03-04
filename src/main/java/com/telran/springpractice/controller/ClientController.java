@@ -1,7 +1,7 @@
 package com.telran.springpractice.controller;
 
 import com.telran.springpractice.entity.Client;
-import com.telran.springpractice.entity.ClientStatus;
+import com.telran.springpractice.entity.enums.ClientStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RestController
+@RequestMapping("/client")
 public class ClientController {
 
     List<Client> clients = new ArrayList<>();
@@ -42,17 +44,6 @@ public class ClientController {
     @GetMapping("/search")
     public List<Client> findByName(@RequestParam String name) {
         return clients.stream().filter(client -> client.getFirstName().equals(name)).toList();
-    }
-
-    @GetMapping("search")
-    public List<Client> getClientsByName(@RequestParam String name) {
-        ArrayList<Client> clientList = new ArrayList<>();
-        for (Client client : clients) {
-            if (client.getFirstName().toLowerCase().equals(name.toLowerCase())) {
-                clientList.add(client);
-            }
-        }
-        return clientList;
     }
 
     @GetMapping("searchByAddress")

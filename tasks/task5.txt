@@ -1,0 +1,77 @@
+Group1 task:
+
+1. Создать классы с полями
+Account {
+    private Long id;
+    private String name;
+    private AccountType type;
+    private AccountStatus status;
+    private BigDecimal balance;
+    private CurrencyCode currencyCode;
+    private String clientId;
+}
+
+enum AccountType {
+  CHECKING,
+  SAVINGS,
+  LOAN,
+  DEBIT_CARD,
+  CREDIT_CARD,
+  OTHER
+}
+
+enum AccountStatus {
+  ACTIVE,
+  INACTIVE,
+  BLOCKED
+}
+
+enum CurrencyCode {
+  EUR,
+  USD,
+  GBP
+}
+
+2. Создать AccountController, создать в нем список тестовых счетов.
+
+3. Реализовать в AccountController
+- REST запрос на вывод списка всех счетов
+- REST запрос на вывод всех счетов, баланс которых находится в пределах от minValue до maxValue
+- REST запрос на удаление всех неактивных ('INACTIVE') счетов
+- REST запрос на добавление нового счета типа DEBIT_CARD для заданного клиента в заданной валюте
+
+-----------------------------------------------------------------------
+Group2 task:
+
+1. Создать класс
+Transaction {
+    private String id;
+    private TransactionType type;
+    private BigDecimal amount;
+    private String description;
+    private TransactionStatus status;
+    private Long fromAccountId;// получатель
+    private Long toAccountId;// отправитель
+}
+
+public enum TransactionType {
+  PAYMENT,
+  REFUND,
+  TRANSFER,
+  CASH,
+  DEPOSIT
+}
+
+public enum TransactionStatus {
+  NEW,
+  PENDING,
+  APPROVED
+}
+
+2. Создать класс TransactionController, создать в нем список тестовых переводов.
+
+3. Реализовать:
+- REST запрос на вывод списка всех переводов
+- REST запрос на добавление перевода
+- REST запрос на поиск перевода по типу и минимальной сумме
+- REST запрос на перевод назад средств заданной транзакции
