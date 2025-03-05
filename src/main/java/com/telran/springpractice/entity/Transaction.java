@@ -2,15 +2,13 @@ package com.telran.springpractice.entity;
 
 import com.telran.springpractice.entity.enums.TransactionStatus;
 import com.telran.springpractice.entity.enums.TransactionType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Transaction {

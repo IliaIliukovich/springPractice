@@ -46,8 +46,8 @@ public class ClientController {
         return clients.stream().filter(client -> client.getFirstName().equals(name)).toList();
     }
 
-    @GetMapping("searchByAddress")
-    public List<Client> getSurnameAddressClients(@RequestParam String surnameChar, @RequestParam String address) {
+    @GetMapping("searchBySurnameAndAddress")
+    public List<Client> findBySurnameAndAddress(@RequestParam String surnameChar, @RequestParam String address) {
         List<Client> result = new ArrayList<>();
         for (Client client : clients) {
             if (client.getLastName().startsWith(surnameChar) && client.getAddress().contains(address)) {
@@ -105,8 +105,8 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping("/whenAddressIsNull")
-    public ResponseEntity<String> whenAddressIsNull() {
+    @PatchMapping("/updateNullAddress")
+    public ResponseEntity<String> updateNullAddress() {
         int count =0;
         for (Client client : clients) {
             if (client.getAddress() == null) {
@@ -114,13 +114,7 @@ public class ClientController {
                 count++;
             }
         }
-        return new ResponseEntity<>(count + " Addresses replaced on 'Not provided'", HttpStatus.ACCEPTED);
-    }
-
-    @PatchMapping("/updateAllStatus")
-    public String updateAllStatus(@RequestParam ClientStatus status) {
-        clients.forEach( client -> client.setStatus(status));
-        return "All client status updated '" + status +"' successfully";
+        return new ResponseEntity<>(count + " addresses replaced on 'Not provided'", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
@@ -131,12 +125,12 @@ public class ClientController {
 
 
     @DeleteMapping("/deleteAllInactive")
-    public ResponseEntity<String> deleteAllInactiveClients() {
+    public ResponseEntity<String> deleteAllInactive() {
         boolean res = clients.removeIf(client -> client.getStatus().equals(ClientStatus.INACTIVE));
         if (res) {
-            return new ResponseEntity<>("All client with status \" + ClientStatus.INACTIVE + \" deleted successfully", HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("All clients with status 'INACTIVE' deleted successfully", HttpStatus.ACCEPTED);
         }
-        return new ResponseEntity<>("Delete error", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("No clients with status 'INACTIVE' found", HttpStatus.ACCEPTED);
     }
 
 }
