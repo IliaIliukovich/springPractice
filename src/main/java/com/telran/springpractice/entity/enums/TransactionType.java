@@ -6,5 +6,5 @@ public enum TransactionType {
     REFUND,
     TRANSFER,
     CASH,
-    DEPOSIT
+    DEPOSIT;
 }

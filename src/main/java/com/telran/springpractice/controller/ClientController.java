@@ -19,16 +19,16 @@ public class ClientController {
 
     public ClientController() {
         // Добавление 10 клиентов через конструктор
-        clients.add(new Client(UUID.randomUUID().toString(), "Schmidt", "Hans", "DE123456789", "h.schmidt@example.com", null, "+49 30 1234567", ClientStatus.ACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Müller", "Anna", "DE987654321", "a.mueller@example.com", "Munich, Germany", "+49 89 7654321", ClientStatus.INACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Klein", "Peter", "DE567890123", "p.klein@example.com", "Hamburg, Germany", "+49 40 6789012", ClientStatus.BLOCKED));
-        clients.add(new Client(UUID.randomUUID().toString(), "Schneider", "Maria", "DE456789012", "m.schneider@example.com", "Frankfurt, Germany", "+49 69 1234567", ClientStatus.ACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Fischer", "Lukas", "DE234567890", "l.fischer@example.com", "Stuttgart, Germany", "+49 711 9876543", ClientStatus.INACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Weber", "Sophie", "DE890123456", "s.weber@example.com", "Cologne, Germany", "+49 221 4567890", ClientStatus.ACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Meyer", "Max", "DE345678901", "m.meyer@example.com", "Düsseldorf, Germany", "+49 211 2345678", ClientStatus.BLOCKED));
-        clients.add(new Client(UUID.randomUUID().toString(), "Wagner", "Julia", "DE678901234", "j.wagner@example.com", "Dresden, Germany", "+49 351 8765432", ClientStatus.ACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Becker", "Anna", "DE789012345", "p.becker@example.com", "Leipzig, Germany", "+49 341 7654321", ClientStatus.INACTIVE));
-        clients.add(new Client(UUID.randomUUID().toString(), "Hoffmann", "Clara", "DE012345678", "c.hoffmann@example.com", null, "+49 421 1234567", ClientStatus.ACTIVE));
+        clients.add(new Client("123ABC", "Schmidt", "Hans", "DE123456789", "h.schmidt@example.com", null, "+49 30 1234567", ClientStatus.ACTIVE));
+        clients.add(new Client("123CDE", "Müller", "Anna", "DE987654321", "a.mueller@example.com", "Munich, Germany", "+49 89 7654321", ClientStatus.INACTIVE));
+        clients.add(new Client("543QWE", "Klein", "Peter", "DE567890123", "p.klein@example.com", "Hamburg, Germany", "+49 40 6789012", ClientStatus.BLOCKED));
+        clients.add(new Client("899DQC", "Schneider", "Maria", "DE456789012", "m.schneider@example.com", "Frankfurt, Germany", "+49 69 1234567", ClientStatus.ACTIVE));
+        clients.add(new Client("000OPJ", "Fischer", "Lukas", "DE234567890", "l.fischer@example.com", "Stuttgart, Germany", "+49 711 9876543", ClientStatus.INACTIVE));
+        clients.add(new Client("196ASD", "Weber", "Sophie", "DE890123456", "s.weber@example.com", "Cologne, Germany", "+49 221 4567890", ClientStatus.ACTIVE));
+        clients.add(new Client("765HJG", "Meyer", "Max", "DE345678901", "m.meyer@example.com", "Düsseldorf, Germany", "+49 211 2345678", ClientStatus.BLOCKED));
+        clients.add(new Client("444KJL", "Wagner", "Julia", "DE678901234", "j.wagner@example.com", "Dresden, Germany", "+49 351 8765432", ClientStatus.ACTIVE));
+        clients.add(new Client("678HGF", "Becker", "Anna", "DE789012345", "p.becker@example.com", "Leipzig, Germany", "+49 341 7654321", ClientStatus.INACTIVE));
+        clients.add(new Client("785MNB", "Hoffmann", "Clara", "DE012345678", "c.hoffmann@example.com", null, "+49 421 1234567", ClientStatus.ACTIVE));
     }
 
     @GetMapping("/all")
@@ -46,8 +46,8 @@ public class ClientController {
         return clients.stream().filter(client -> client.getFirstName().equals(name)).toList();
     }
 
-    @GetMapping("searchByAddress")
-    public List<Client> getSurnameAddressClients(@RequestParam String surnameChar, @RequestParam String address) {
+    @GetMapping("searchBySurnameAndAddress")
+    public List<Client> findBySurnameAndAddress(@RequestParam String surnameChar, @RequestParam String address) {
         List<Client> result = new ArrayList<>();
         for (Client client : clients) {
             if (client.getLastName().startsWith(surnameChar) && client.getAddress().contains(address)) {
@@ -105,8 +105,8 @@ public class ClientController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping("/whenAddressIsNull")
-    public ResponseEntity<String> whenAddressIsNull() {
+    @PatchMapping("/updateNullAddress")
+    public ResponseEntity<String> updateNullAddress() {
         int count =0;
         for (Client client : clients) {
             if (client.getAddress() == null) {
@@ -114,13 +114,7 @@ public class ClientController {
                 count++;
             }
         }
-        return new ResponseEntity<>(count + " Addresses replaced on 'Not provided'", HttpStatus.ACCEPTED);
-    }
-
-    @PatchMapping("/updateAllStatus")
-    public String updateAllStatus(@RequestParam ClientStatus status) {
-        clients.forEach( client -> client.setStatus(status));
-        return "All client status updated '" + status +"' successfully";
+        return new ResponseEntity<>(count + " addresses replaced on 'Not provided'", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
@@ -131,12 +125,12 @@ public class ClientController {
 
 
     @DeleteMapping("/deleteAllInactive")
-    public ResponseEntity<String> deleteAllInactiveClients() {
+    public ResponseEntity<String> deleteAllInactive() {
         boolean res = clients.removeIf(client -> client.getStatus().equals(ClientStatus.INACTIVE));
         if (res) {
-            return new ResponseEntity<>("All client with status \" + ClientStatus.INACTIVE + \" deleted successfully", HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("All clients with status 'INACTIVE' deleted successfully", HttpStatus.ACCEPTED);
         }
-        return new ResponseEntity<>("Delete error", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("No clients with status 'INACTIVE' found", HttpStatus.ACCEPTED);
     }
 
 }
