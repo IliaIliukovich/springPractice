@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 @RestController
 @RequestMapping("/transaction")
@@ -40,20 +41,9 @@ public class TransactionController {
     @GetMapping("/searchByType")
     public List<Transaction> searchByType(@RequestParam(required = false) TransactionType type,
                                           @RequestParam(required = false) BigDecimal minAmount) {
-        if (type == null && minAmount == null) {
-            return transactions;
-        } else if (type == null) {
-            return transactions.stream()
-                    .filter(t -> t.getAmount().compareTo(minAmount) > 0)
-                    .toList();
-        } else if (minAmount == null) {
-            return transactions.stream().filter(t -> t.getType().equals(type))
-                    .toList();
-        } else {
-            return transactions.stream().filter(t -> t.getType().equals(type))
-                    .filter(t -> t.getAmount().compareTo(minAmount) > 0)
-                    .toList();
-        }
+        Predicate<Transaction> predicate = t -> (type == null || (type == t.getType())) &&
+                (minAmount == null || t.getAmount().compareTo(minAmount) > 0);
+        return transactions.stream().filter(predicate).toList();
     }
 
 
