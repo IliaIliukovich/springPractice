@@ -14,3 +14,8 @@ insert into account (id, name, type, status, balance, currency_code, client_id)
     values (1, 'Debit', 'CHECKING', 'ACTIVE', 15432, 'EUR', '123ABC'),
         (2, 'Credit', 'LOAN', 'BLOCKED', 8978, 'GBP', '123CDE'),
         (3, 'Deposit', 'DEBIT_CARD', 'INACTIVE',94787, 'USD', '543QWE');
+
+insert into transaction(id, type, amount, description, status, from_account_id, to_account_id)
+values ( 'f6bc3ef4-4894-42f2-9c7b-66b9a8b80e7c','CASH', 100,'Text', 'NEW', 1, 2 ),
+ ('f2bc3ef4-4894-42f2-9c7b-66b9a8b80c7c','CASH', 233,'Text2', 'NEW', 2, 3),
+ ('f6bc5ef4-4894-42f2-9c7b-66b9a8b80c7c','CASH', 45343,'Text3', 'NEW', 3, 1);

@@ -29,9 +29,6 @@ public class TransactionService {
     }
 
     public List<Transaction> searchByType(TransactionType type, BigDecimal minAmount) {
-        List<Transaction> all = repository.findAll();
-        Predicate<Transaction> predicate = t -> (type == null || (type == t.getType())) &&
-                (minAmount == null || t.getAmount().compareTo(minAmount) > 0);
-        return all.stream().filter(predicate).toList();
+        return repository.findByTypeAndAmountGreaterThanEqual(type, minAmount);
     }
 }
