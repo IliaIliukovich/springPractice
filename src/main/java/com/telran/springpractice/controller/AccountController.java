@@ -18,40 +18,24 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
 
-    private final AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
-//    List<Account> accounts = new ArrayList<>();
-//
-//    public AccountController() {
-//        accounts.add(new Account(1l, "Schmidt", AccountType.CHECKING, AccountStatus.ACTIVE, new BigDecimal("15432"), CurrencyCode.EUR, "123ABC"));
-//        accounts.add(new Account(2l, "Müller", AccountType.LOAN, AccountStatus.BLOCKED, new BigDecimal("8978"), CurrencyCode.GBP, "123CDE"));
-//        accounts.add(new Account(3l, "Klein", AccountType.DEBIT_CARD, AccountStatus.INACTIVE, new BigDecimal("94787"), CurrencyCode.USD, "543QWE"));
-//    }
-
     @GetMapping
     public List<Account> getAll() {
         return accountService.getAll();
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<Account>> getAll() {
-//        return accountService;
-//    }
+    @GetMapping("/filter")
+    public List<Account> filterByBalance(@RequestParam BigDecimal minValue, @RequestParam BigDecimal maxValue) {
+        List<Account> accounts = accountService.filterByBalance(minValue, maxValue);
+        return accounts;
+    }
 
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<Account>> filterByBalance(@RequestParam BigDecimal minValue, @RequestParam BigDecimal maxValue) {
-//        List<Account> result = accounts
-//                .stream()
-//                .filter(account -> account.getBalance().compareTo(minValue) >= 0 && account.getBalance().compareTo(maxValue) <= 0)
-//                .toList();
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-//
 //    @DeleteMapping("/delete-all-inactive")
 //    public ResponseEntity<Void> deleteInactive() {
 //        accounts.removeIf(account -> account.getStatus() == AccountStatus.INACTIVE);
