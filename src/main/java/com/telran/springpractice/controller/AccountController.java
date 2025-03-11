@@ -42,7 +42,7 @@ public class AccountController {
 //    public ResponseEntity<List<Account>> getAll() {
 //        return accountService;
 //    }
-
+//
 //    @GetMapping("/filter")
 //    public ResponseEntity<List<Account>> filterByBalance(@RequestParam BigDecimal minValue, @RequestParam BigDecimal maxValue) {
 //        List<Account> result = accounts

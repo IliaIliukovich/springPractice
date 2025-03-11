@@ -11,9 +11,9 @@ values  ('b2c2e8dd-6bce-4401-bd71-ffaed9d6ada0','Schmidt', 'Hans', 'DE123456789'
         ('f6bc3ef4-4894-42f2-9c7b-66b9a8b80c7c', 'Hoffmann', 'Clara', 'DE012345678', 'c.hoffmann@example.com', 'Bremen, Germany', '+49 421 1234567', 'ACTIVE');
 
 insert into account (id, name, type, status, balance, currency_code, client_id)
-    values (1, 'Debit', 'CHECKING', 'ACTIVE', 15432, 'EUR', '123ABC'),
-        (2, 'Credit', 'LOAN', 'BLOCKED', 8978, 'GBP', '123CDE'),
-        (3, 'Deposit', 'DEBIT_CARD', 'INACTIVE',94787, 'USD', '543QWE');
+    values (1, 'Debit', 'CHECKING', 'ACTIVE', 15432, 'EUR', 'b2c2e8dd-6bce-4401-bd71-ffaed9d6ada0'),
+        (2, 'Credit', 'LOAN', 'BLOCKED', 8978, 'GBP', '20980395-20d0-4ea8-8e4b-de2252a028eb'),
+        (3, 'Deposit', 'DEBIT_CARD', 'INACTIVE',94787, 'USD', '9cd1b6c5-06d7-4f6c-9959-3856b1b51045');
 
 insert into transaction(id, type, amount, description, status, from_account_id, to_account_id)
 values ( 'f6bc3ef4-4894-42f2-9c7b-66b9a8b80e7c','CASH', 100,'Text', 'NEW', 1, 2 ),
