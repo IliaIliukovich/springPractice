@@ -1,10 +1,7 @@
 package com.telran.springpractice.entity;
 
 import com.telran.springpractice.entity.enums.ClientStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import lombok.Setter;
 public class Client {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String lastName;
     private String firstName;

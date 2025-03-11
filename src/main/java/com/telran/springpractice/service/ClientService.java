@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -19,5 +20,50 @@ public class ClientService {
 
     public List<Client> getAll(){
         return repository.findAll();
+    }
+
+    public Optional<Client> getClientById(String uuid) {
+        return repository.findById(uuid);
+    }
+
+    public List<Client> findByName(String name) {
+        return repository.findByFirstName(name);
+    }
+
+    public List<Client> findBySurnameAndAddress(String surnameChar, String address) {
+        return repository.findByLastNameStartingWithAndAddressContaining(surnameChar, address);
+    }
+
+    public Client addClient(Client client) {
+        return repository.save(client);
+    }
+
+    public Optional<Client> updateClient(Client client) {
+        Optional<Client> found = repository.findById(client.getId());
+        if (found.isPresent()) {
+            return Optional.of(repository.save(client));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Client> changeStatus(String id, String status) {
+        return null;
+    }
+
+    public boolean patchClient(String id, String address) {
+        return false;
+    }
+
+    public int updateNullAddress() {
+        return 0;
+    }
+
+    public void deleteClient(String id) {
+
+    }
+
+    public boolean deleteAllInactive() {
+        int result = repository.customQuery();
+        return result != 0;
     }
 }
