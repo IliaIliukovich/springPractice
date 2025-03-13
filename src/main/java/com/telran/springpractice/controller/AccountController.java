@@ -1,9 +1,6 @@
 package com.telran.springpractice.controller;
 
 import com.telran.springpractice.entity.Account;
-import com.telran.springpractice.entity.enums.AccountStatus;
-import com.telran.springpractice.entity.enums.AccountType;
-import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,15 +32,19 @@ public class AccountController {
         return accounts;
     }
 
-//    @DeleteMapping("/delete-all-inactive")
-//    public ResponseEntity<Void> deleteInactive() {
-//        accounts.removeIf(account -> account.getStatus() == AccountStatus.INACTIVE);
-//        return new ResponseEntity<>(HttpStatus.ACCEPTED);
-//    }
-//
-//    @PostMapping("/add-debit-account")
-//    public ResponseEntity<Void> addDebitAccount(@RequestParam String id,@RequestParam CurrencyCode currencyCode) {
-//        accounts.add(new Account(4L, "Current Account", AccountType.DEBIT_CARD, AccountStatus.ACTIVE, new BigDecimal("0"), currencyCode, id));
-//        return new ResponseEntity<Void>(HttpStatus.CREATED);
-//    }
+    @DeleteMapping("/delete-all-inactive")
+    public ResponseEntity<String> deleteInactive() {
+        int i = accountService.deleteInactive();
+        return i != 0 ? new ResponseEntity<>("All inactive accounts are deleted successfully", HttpStatus.OK)
+                : new ResponseEntity<>("No inactive accounts are found", HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/add-debit-account")
+    public ResponseEntity<Void> create(@RequestBody Account account) {
+        Account returnedAccount = accountService.create(account);
+        if (returnedAccount == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
