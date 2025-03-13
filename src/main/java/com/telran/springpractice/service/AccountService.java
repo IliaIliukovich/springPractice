@@ -5,6 +5,7 @@ import com.telran.springpractice.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,5 +20,9 @@ public class AccountService {
 
     public List<Account> getAll(){
         return repository.findAll();
+    }
+
+    public List<Account> filterByBalance(BigDecimal minValue, BigDecimal maxValue) {
+        return repository.findAccountsByBalanceBetween(minValue, maxValue);
     }
 }
