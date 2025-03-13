@@ -21,6 +21,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -28,9 +29,11 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
+
     private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
     private CurrencyCode currencyCode;
+
     private String clientId;
 }
