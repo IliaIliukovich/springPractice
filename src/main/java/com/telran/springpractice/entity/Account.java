@@ -3,10 +3,7 @@ package com.telran.springpractice.entity;
 import com.telran.springpractice.entity.enums.AccountStatus;
 import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +19,7 @@ import java.math.BigDecimal;
 public class Account {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
@@ -35,5 +33,4 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private CurrencyCode currencyCode;
     private String clientId;
-
 }
