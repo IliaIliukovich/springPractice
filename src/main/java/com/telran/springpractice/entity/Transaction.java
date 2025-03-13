@@ -2,10 +2,7 @@ package com.telran.springpractice.entity;
 
 import com.telran.springpractice.entity.enums.TransactionStatus;
 import com.telran.springpractice.entity.enums.TransactionType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,6 +16,7 @@ import java.math.BigDecimal;
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Enumerated(EnumType.STRING)

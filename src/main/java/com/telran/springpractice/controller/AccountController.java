@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
 
-    private AccountService accountService;
+    private final AccountService accountService;
 
     @Autowired
     public AccountController(AccountService accountService) {

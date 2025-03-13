@@ -44,6 +44,15 @@ public class TransactionController {
         return service.searchByType(type, minAmount);
     }
 
+    @PostMapping("/refund/{id}")
+    public ResponseEntity<Transaction> refundByID(@PathVariable String id) {
+        Transaction refundTransactionById = service.refundTransactionById(id);
+        if (refundTransactionById != null) {
+            return new ResponseEntity<>(refundTransactionById, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
 }
 
