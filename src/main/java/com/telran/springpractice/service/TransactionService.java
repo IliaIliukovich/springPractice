@@ -55,7 +55,7 @@ public class TransactionService {
     public Transaction transfer(Long from, Long to, BigDecimal amount) {
         Optional<Account> fromAccount = accountRepository.findById(from);
         Optional<Account> toAccount = accountRepository.findById(to);
-        if (!fromAccount.isPresent() || !toAccount.isPresent()) {
+        if (fromAccount.isEmpty() || toAccount.isEmpty()) {
             throw new AccountNotFoundException("Account not found");
         }
         Account sender = fromAccount.get();

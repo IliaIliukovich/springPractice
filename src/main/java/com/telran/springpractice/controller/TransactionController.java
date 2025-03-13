@@ -57,14 +57,18 @@ public class TransactionController {
 
     @PostMapping("/transfer")
     public ResponseEntity<Transaction> transfer(@RequestParam Long from, @RequestParam Long to, @RequestParam BigDecimal amount) {
-        try {
-            Transaction transfer = service.transfer(from, to, amount);
-            return new ResponseEntity<>(transfer, HttpStatus.OK);
-        } catch (AccountNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (NotEnoughAmountException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Transaction transfer = service.transfer(from, to, amount);
+        return new ResponseEntity<>(transfer, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(NotEnoughAmountException.class)
+    public ResponseEntity<String> handleNotEnoughAmountException(NotEnoughAmountException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<String> handleAccountNotFoundException(AccountNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 
