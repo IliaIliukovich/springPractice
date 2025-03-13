@@ -1,8 +1,12 @@
 package com.telran.springpractice.service;
 
+import com.telran.springpractice.entity.Account;
 import com.telran.springpractice.entity.Transaction;
 import com.telran.springpractice.entity.enums.TransactionStatus;
 import com.telran.springpractice.entity.enums.TransactionType;
+import com.telran.springpractice.exception.AccountNotFoundException;
+import com.telran.springpractice.exception.NotEnoughAmountException;
+import com.telran.springpractice.repository.AccountRepository;
 import com.telran.springpractice.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,16 +14,18 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @Service
 public class TransactionService {
 
     private final TransactionRepository repository;
 
+    private final AccountRepository accountRepository;
+
     @Autowired
-    public TransactionService(TransactionRepository repository) {
+    public TransactionService(TransactionRepository repository, AccountRepository accountRepository) {
         this.repository = repository;
+        this.accountRepository = accountRepository;
     }
 
     public List<Transaction> getAll() {
@@ -44,5 +50,26 @@ public class TransactionService {
             ));
         }
         return null;
+    }
+
+    public Transaction transfer(Long from, Long to, BigDecimal amount) {
+        Optional<Account> fromAccount = accountRepository.findById(from);
+        Optional<Account> toAccount = accountRepository.findById(to);
+        if (!fromAccount.isPresent() || !toAccount.isPresent()) {
+            throw new AccountNotFoundException("Account not found");
+        }
+        Account sender = fromAccount.get();
+        if (sender.getBalance().compareTo(amount) < 0) {
+            throw new NotEnoughAmountException("Not enough amount");
+        }
+        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "new Transaction", TransactionStatus.NEW, from, to);
+        sender.setBalance(sender.getBalance().subtract(amount));
+        accountRepository.save(sender);
+
+        Account receiver = toAccount.get();
+        receiver.setBalance(receiver.getBalance().add(amount));
+        accountRepository.save(receiver);
+
+        return repository.save(transaction);
     }
 }
