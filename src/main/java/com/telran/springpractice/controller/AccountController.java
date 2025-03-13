@@ -1,6 +1,7 @@
 package com.telran.springpractice.controller;
 
 import com.telran.springpractice.entity.Account;
+import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,12 +40,15 @@ public class AccountController {
                 : new ResponseEntity<>("No inactive accounts are found", HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/add-debit-account")
-    public ResponseEntity<Void> create(@RequestBody Account account) {
+    @PostMapping("/add-account")
+    public ResponseEntity<Account> create(@RequestBody Account account) {
         Account returnedAccount = accountService.create(account);
-        if (returnedAccount == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(returnedAccount, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/add-debt-account")
+    public ResponseEntity<Account> createDebit(@RequestParam String clientId, @RequestParam CurrencyCode currencyCode) {
+        Account returnedAccount = accountService.addDebitByClientId(clientId, currencyCode);
+        return new ResponseEntity<>(returnedAccount, HttpStatus.CREATED);
     }
 }

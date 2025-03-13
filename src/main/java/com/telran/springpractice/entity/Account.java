@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 public class Account {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
@@ -32,5 +33,4 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private CurrencyCode currencyCode;
     private String clientId;
-
 }
