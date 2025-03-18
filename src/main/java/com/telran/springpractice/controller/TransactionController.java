@@ -1,21 +1,18 @@
 package com.telran.springpractice.controller;
 
 import com.telran.springpractice.entity.Transaction;
-import com.telran.springpractice.entity.enums.TransactionStatus;
 import com.telran.springpractice.entity.enums.TransactionType;
 import com.telran.springpractice.exception.AccountNotFoundException;
 import com.telran.springpractice.exception.NotEnoughAmountException;
 import com.telran.springpractice.service.TransactionService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 @RestController
 @RequestMapping("/transaction")
@@ -59,6 +56,11 @@ public class TransactionController {
     public ResponseEntity<Transaction> transfer(@RequestParam Long from, @RequestParam Long to, @RequestParam BigDecimal amount) {
         Transaction transfer = service.transfer(from, to, amount);
         return new ResponseEntity<>(transfer, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<String> handleIOException(IOException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotEnoughAmountException.class)
