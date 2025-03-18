@@ -18,7 +18,7 @@ insert into account (id, name, type, status, balance, currency_code, client_id)
         (5, 'Credit', 'LOAN', 'ACTIVE', 5000, 'GBP', 'bb10eec7-e408-4f11-9603-ec3c4a371512'),
         (6, 'Deposit', 'DEBIT_CARD', 'INACTIVE',3000, 'USD', '9cd1b6c5-06d7-4f6c-9959-3856b1b51045');
 
-insert into transaction(id, type, amount, description, status, from_account_id, to_account_id)
-values ( 'f6bc3ef4-4894-42f2-9c7b-66b9a8b80e7c','CASH', 100,'Text', 'NEW', 1, 2 ),
- ('f2bc3ef4-4894-42f2-9c7b-66b9a8b80c7c','CASH', 233,'Text2', 'NEW', 2, 3),
- ('f6bc5ef4-4894-42f2-9c7b-66b9a8b80c7c','CASH', 45343,'Text3', 'NEW', 3, 1);
+insert into transaction(id, type, amount, description, status, from_account_id, to_account_id, currency_code)
+values ( 'f6bc3ef4-4894-42f2-9c7b-66b9a8b80e7c','CASH', 100,'Text', 'NEW', 1, 2, 'EUR' ),
+ ('f2bc3ef4-4894-42f2-9c7b-66b9a8b80c7c','CASH', 233,'Text2', 'NEW', 2, 3, 'CNY'),
+ ('f6bc5ef4-4894-42f2-9c7b-66b9a8b80c7c','CASH', 45343,'Text3', 'NEW', 3, 1, 'JPY');
