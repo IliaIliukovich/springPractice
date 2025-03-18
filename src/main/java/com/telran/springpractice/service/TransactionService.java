@@ -52,7 +52,7 @@ public class TransactionService {
             Transaction transaction = transactionOption.get();
             return repository.save(new Transaction(
                     null, transaction.getType(), transaction.getAmount(), transaction.getDescription(), TransactionStatus.NEW,
-                    transaction.getToAccountId(), transaction.getFromAccountId(), transaction.getCurrencyCode()
+                    transaction.getCurrencyCode(), transaction.getToAccount(), transaction.getFromAccount()
             ));
         }
         return null;
@@ -79,7 +79,7 @@ public class TransactionService {
         receiver.setBalance(receiver.getBalance().add(amountInRequiredCurrency));
         accountRepository.save(receiver);
 
-        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "new Transaction", TransactionStatus.NEW, from, to, sender.getCurrencyCode());
+        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "new Transaction", TransactionStatus.NEW, sender.getCurrencyCode(),sender,receiver);
         return repository.save(transaction);
     }
 

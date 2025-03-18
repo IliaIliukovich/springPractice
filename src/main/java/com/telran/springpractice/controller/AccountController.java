@@ -51,4 +51,10 @@ public class AccountController {
         Account returnedAccount = accountService.addDebitByClientId(clientId, currencyCode);
         return new ResponseEntity<>(returnedAccount, HttpStatus.CREATED);
     }
+
+    @GetMapping("/summary/{id}")
+    public ResponseEntity<Account> getSummary(@PathVariable Long id) {
+        return null;
+    }
+
 }

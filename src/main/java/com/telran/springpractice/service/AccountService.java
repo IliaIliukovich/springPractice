@@ -1,6 +1,7 @@
 package com.telran.springpractice.service;
 
 import com.telran.springpractice.entity.Account;
+import com.telran.springpractice.entity.Transaction;
 import com.telran.springpractice.entity.enums.AccountStatus;
 import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,7 +51,8 @@ public class AccountService {
                 AccountType.DEBIT_CARD,
                 AccountStatus.ACTIVE,
                 new BigDecimal("0"),
-                currencyCode,clientId);
+                currencyCode,
+                clientId,List.of(),new ArrayList<Transaction>());
 
         return repository.save(account);
     }
