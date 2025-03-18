@@ -1,5 +1,6 @@
 package com.telran.springpractice.entity;
 
+import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.entity.enums.TransactionStatus;
 import com.telran.springpractice.entity.enums.TransactionType;
 import jakarta.persistence.*;
@@ -32,4 +33,7 @@ public class Transaction {
     private Long fromAccountId;// получатель
 
     private Long toAccountId;// отправитель
+
+    @Enumerated(EnumType.STRING)
+    private CurrencyCode currencyCode;
 }

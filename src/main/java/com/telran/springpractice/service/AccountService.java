@@ -36,6 +36,7 @@ public class AccountService {
         return repository.removeAccountsByStatusINACTIVE();
     }
 
+    @Transactional
     public Account create(Account account){
         return repository.save(account);
     }

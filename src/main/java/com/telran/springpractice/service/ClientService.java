@@ -2,6 +2,7 @@ package com.telran.springpractice.service;
 
 import com.telran.springpractice.entity.Client;
 import com.telran.springpractice.repository.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class ClientService {
         return repository.save(client);
     }
 
+    @Transactional
     public Optional<Client> updateClient(Client client) {
         Optional<Client> found = repository.findById(client.getId());
         if (found.isPresent()) {
@@ -62,6 +64,7 @@ public class ClientService {
 
     }
 
+    @Transactional
     public boolean deleteAllInactive() {
         int result = repository.customQuery();
         return result != 0;

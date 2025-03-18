@@ -32,8 +32,5 @@ public class CurrencyController {
         }
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<String> handleException(ResponseStatusException e) {
-        return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
-    }
+
 }

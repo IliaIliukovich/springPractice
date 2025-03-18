@@ -58,22 +58,6 @@ public class TransactionController {
         return new ResponseEntity<>(transfer, HttpStatus.OK);
     }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<String> handleIOException(IOException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(NotEnoughAmountException.class)
-    public ResponseEntity<String> handleNotEnoughAmountException(NotEnoughAmountException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<String> handleAccountNotFoundException(AccountNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-
 }
 
 

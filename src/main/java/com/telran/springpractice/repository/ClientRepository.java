@@ -18,7 +18,6 @@ public interface ClientRepository extends JpaRepository<Client, String> {
 
     @Query("delete from Client c where c.status = 'INACTIVE'")
     @Modifying
-    @Transactional
     int customQuery();
 
 }
