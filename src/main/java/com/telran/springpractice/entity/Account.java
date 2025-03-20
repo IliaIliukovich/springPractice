@@ -1,5 +1,6 @@
 package com.telran.springpractice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.telran.springpractice.entity.enums.AccountStatus;
 import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
@@ -35,5 +36,7 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private CurrencyCode currencyCode;
 
-    private String clientId;
+    @ManyToOne
+    @JsonIgnore
+    private Client client;
 }

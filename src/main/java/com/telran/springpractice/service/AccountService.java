@@ -5,6 +5,7 @@ import com.telran.springpractice.entity.enums.AccountStatus;
 import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.repository.AccountRepository;
+import com.telran.springpractice.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,12 @@ public class AccountService {
 
     private final AccountRepository repository;
 
+    private final ClientRepository clientRepository;
+
     @Autowired
-    public AccountService(AccountRepository repository) {
+    public AccountService(AccountRepository repository, ClientRepository clientRepository) {
         this.repository = repository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Account> getAll() {
@@ -49,7 +53,7 @@ public class AccountService {
                 AccountType.DEBIT_CARD,
                 AccountStatus.ACTIVE,
                 new BigDecimal("0"),
-                currencyCode,clientId);
+                currencyCode, clientRepository.findById(clientId).get());
 
         return repository.save(account);
     }

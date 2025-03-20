@@ -1,6 +1,7 @@
 package com.telran.springpractice.repository;
 
 import com.telran.springpractice.entity.Account;
+import com.telran.springpractice.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +21,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     int removeAccountsByStatusINACTIVE();
 
     @Modifying
-    @Query("INSERT INTO Account (clientId, type, currencyCode, balance) VALUES (:clientId, 'DEBIT_CARD', :currency, 0)")
-    void createDebitCardAccount(@Param("clientId") Long clientId, @Param("currency") String currency);
+    @Query("INSERT INTO Account (client, type, currencyCode, balance) VALUES (:clientId, 'DEBIT_CARD', :currency, 0)")
+    void createDebitCardAccount(@Param("client") Client clientId, @Param("currency") String currency);
 
 }
