@@ -1,5 +1,6 @@
 package com.telran.springpractice.controller;
 
+import com.telran.springpractice.dto.ClientStatisticDto;
 import com.telran.springpractice.entity.Client;
 import com.telran.springpractice.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,4 +88,8 @@ public class ClientController {
                 new ResponseEntity<>("No clients with status 'INACTIVE' found", HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/summary/{id}")
+    public ResponseEntity<ClientStatisticDto> getSummary(@PathVariable String id) {
+        return new ResponseEntity<>(service.getClientStatistic(id), HttpStatus.OK);
+    }
 }
