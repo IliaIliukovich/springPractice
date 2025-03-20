@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,4 +38,12 @@ public class Account {
     private CurrencyCode currencyCode;
 
     private String clientId;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "fromAccount")
+    private List<Transaction> fromTransactions = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "toAccount")
+    private List<Transaction> toTransactions = new ArrayList<>();
+
+
 }
