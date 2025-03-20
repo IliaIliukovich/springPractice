@@ -1,6 +1,8 @@
 package com.telran.springpractice.controller;
 
+import com.telran.springpractice.dto.AccountSummaryDto;
 import com.telran.springpractice.entity.Account;
+import com.telran.springpractice.entity.Transaction;
 import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +54,14 @@ public class AccountController {
         return new ResponseEntity<>(returnedAccount, HttpStatus.CREATED);
     }
 
-    @GetMapping("/account/summary/{id}")
-    public ResponseEntity<Account> getAccountSummary(@PathVariable Long id) {
-return null;
+    @GetMapping("/summary/{id}")
+    public ResponseEntity<AccountSummaryDto> getAccountSummary(@PathVariable Long id) {
+
+        AccountSummaryDto accountSummaryDto = accountService.accountSummaryDto(id);
+        return new ResponseEntity<>(accountSummaryDto, HttpStatus.OK);
+
+
     }
+
+
 }
