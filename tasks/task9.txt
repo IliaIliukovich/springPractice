@@ -1,0 +1,29 @@
+1. Создать класс для хранения данных банковской карты Card
+public class Card {
+    String id;
+    CardType cardType;
+    String cardNumber;
+    String cardHolder;
+    Integer cvv;
+    String expiryDate;
+}
+
+public enum CardType {
+    MASTERCARD,
+    VISA
+}
+
+2. Связать классы Card и Account
+3. Реализовать REST API для открытия новой банковской карты:
+
+	URL: /card/new
+	Метод: POST
+	Тело запроса:
+	{
+	  "clientId": "string",
+	  "cardType": "string",
+	  "currency": "string"
+	}
+	Ожидаемые HTTP статусы: 201 Created, 400 Bad Request
+
+При открытии карты к карте привязывается новый счет типа DEBIT_CARD
