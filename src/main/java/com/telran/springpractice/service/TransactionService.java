@@ -10,13 +10,14 @@ import com.telran.springpractice.repository.AccountRepository;
 import com.telran.springpractice.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class TransactionService {
 
     private final TransactionRepository repository;
@@ -75,11 +76,13 @@ public class TransactionService {
         sender.setBalance(sender.getBalance().subtract(amount));
         accountRepository.save(sender);
 
-        BigDecimal amountInRequiredCurrency = currencyService.convertAmountToRequiredCurrency(amount, sender.getCurrencyCode(), receiver.getCurrencyCode());
+        BigDecimal amountInRequiredCurrency = currencyService.convertAmountToRequiredCurrency(amount, sender.getCurrencyCode(),
+                receiver.getCurrencyCode());
         receiver.setBalance(receiver.getBalance().add(amountInRequiredCurrency));
         accountRepository.save(receiver);
 
-        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "new Transaction", TransactionStatus.NEW, sender.getCurrencyCode(),sender,receiver);
+        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "new Transaction",
+                TransactionStatus.NEW, sender.getCurrencyCode(),sender, receiver );
         return repository.save(transaction);
     }
 

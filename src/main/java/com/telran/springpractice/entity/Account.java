@@ -1,5 +1,6 @@
 package com.telran.springpractice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.telran.springpractice.entity.enums.AccountStatus;
 import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
@@ -37,12 +38,15 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private CurrencyCode currencyCode;
 
-    private String clientId;
+    @ManyToOne
+    @JsonIgnore
+    private Client client;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fromAccount")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "fromAccount")
     private List<Transaction> fromTransactions = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "toAccount")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "toAccount")
     private List<Transaction> toTransactions = new ArrayList<>();
+
 
 }

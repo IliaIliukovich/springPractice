@@ -31,6 +31,9 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
+//    private Long fromAccountId;// получатель
+//
+//    private Long toAccountId;// отправитель
 
     @Enumerated(EnumType.STRING)
     private CurrencyCode currencyCode;
@@ -39,7 +42,9 @@ public class Transaction {
     @JsonIgnore
     private Account fromAccount;
 
+
     @ManyToOne
     @JsonIgnore
     private Account toAccount;
+
 }
