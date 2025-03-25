@@ -31,11 +31,18 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<String> handleAccountNotFoundException(ClientNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
         e.printStackTrace();
         return new ResponseEntity<>("Some unexpected error on the server", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 
 
