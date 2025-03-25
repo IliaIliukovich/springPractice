@@ -70,6 +70,7 @@ public class CardService {
             cardNumber.append(random.nextInt(10));
         }
         return cardNumber.toString();
+
     }
 
 }
