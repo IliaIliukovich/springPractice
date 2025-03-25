@@ -9,10 +9,10 @@ import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.exception.AccountNotFoundException;
 import com.telran.springpractice.repository.AccountRepository;
 import com.telran.springpractice.repository.ClientRepository;
-import jakarta.transaction.Transactional;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class AccountService {
 
     private final AccountRepository repository;

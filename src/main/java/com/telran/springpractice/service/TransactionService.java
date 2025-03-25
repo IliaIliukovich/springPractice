@@ -10,13 +10,14 @@ import com.telran.springpractice.repository.AccountRepository;
 import com.telran.springpractice.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class TransactionService {
 
     private final TransactionRepository repository;

@@ -5,17 +5,16 @@ import com.telran.springpractice.entity.Account;
 import com.telran.springpractice.entity.Client;
 import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.repository.ClientRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class ClientService {
 
     private final ClientRepository repository;
@@ -45,6 +44,7 @@ public class ClientService {
         return repository.findByLastNameStartingWithAndAddressContaining(surnameChar, address);
     }
 
+    @Transactional
     public Client addClient(Client client) {
         return repository.save(client);
     }
@@ -58,18 +58,22 @@ public class ClientService {
         return Optional.empty();
     }
 
+    @Transactional
     public Optional<Client> changeStatus(String id, String status) {
         return null;
     }
 
+    @Transactional
     public boolean patchClient(String id, String address) {
         return false;
     }
 
+    @Transactional
     public int updateNullAddress() {
         return 0;
     }
 
+    @Transactional
     public void deleteClient(String id) {
 
     }
