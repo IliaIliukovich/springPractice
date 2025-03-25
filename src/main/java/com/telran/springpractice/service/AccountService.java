@@ -86,11 +86,11 @@ public class AccountService {
             int to = account.getToTransactions().size();
             int transactionsQuantity = (from + to);
 
-            BigDecimal totalAmount = account.getFromTransactions().stream()
+            BigDecimal totalAmount = account.getFromTransactions().stream() // TODO
                     .map(Transaction::getAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            BigDecimal totalAmountTwo = account.getToTransactions().stream()
+            BigDecimal totalAmountTwo = account.getToTransactions().stream() // TODO
                     .map(Transaction::getAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 

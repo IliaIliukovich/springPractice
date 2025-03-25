@@ -93,7 +93,7 @@ public class ClientService {
                     (account1.getBalance(),account1.getCurrencyCode(), CurrencyCode.USD));
         }
 
-        //Map<CurrencyCode, BigDecimal> getSum = new HashMap<>();
+        //Map<CurrencyCode, BigDecimal> getSum = new HashMap<>(); // TODO
 
         //getSum.forEach((k, v) -> );
 
