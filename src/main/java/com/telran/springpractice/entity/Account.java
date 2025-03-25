@@ -48,5 +48,8 @@ public class Account {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "toAccount")
     private List<Transaction> toTransactions = new ArrayList<>();
 
+    @OneToOne(mappedBy = "account")
+    private Card card;
+
 
 }
