@@ -24,4 +24,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("INSERT INTO Account (client, type, currencyCode, balance) VALUES (:clientId, 'DEBIT_CARD', :currency, 0)")
     void createDebitCardAccount(@Param("client") Client clientId, @Param("currency") String currency);
 
+    List<Account> id(Long id);
 }
