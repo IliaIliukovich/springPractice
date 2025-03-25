@@ -1,10 +1,16 @@
 package com.telran.springpractice.dto;
 
 import com.telran.springpractice.entity.enums.CurrencyCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ClientStatisticDto {
 
     private BigDecimal generalSum;
