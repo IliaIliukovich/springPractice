@@ -8,6 +8,7 @@ import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.exception.AccountNotFoundException;
 import com.telran.springpractice.repository.AccountRepository;
+import com.telran.springpractice.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,12 +27,14 @@ public class AccountService {
 
     private  final TransactionService transactionService;
     private final AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public AccountService(AccountRepository repository, TransactionService transactionService, AccountRepository accountRepository) {
+    public AccountService(AccountRepository repository, TransactionService transactionService, AccountRepository accountRepository, ClientRepository clientRepository) {
         this.repository = repository;
         this.transactionService = transactionService;
         this.accountRepository = accountRepository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Account> getAll() {
@@ -65,7 +69,7 @@ public class AccountService {
                 AccountType.DEBIT_CARD,
                 AccountStatus.ACTIVE,
                 new BigDecimal("0"),
-                currencyCode,clientId,
+                currencyCode,clientRepository.findById(clientId).get(),
                null,
                 null);
 

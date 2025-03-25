@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,15 +19,23 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @OneToMany(mappedBy = "client")
+    private List<Account> account;
+
     private String lastName;
+
     private String firstName;
+
     private String taxCode;
+
     private String email;
+
     private String address;
+
     private String phone;
 
     @Enumerated(EnumType.STRING)
     private ClientStatus status;
-
 }
 
