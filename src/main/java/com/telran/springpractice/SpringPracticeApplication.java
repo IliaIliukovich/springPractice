@@ -1,6 +1,7 @@
 package com.telran.springpractice;
 
 import com.telran.springpractice.bean.Language;
+import com.telran.springpractice.service.CardService;
 import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +24,8 @@ public class SpringPracticeApplication {
 
         Language language = context.getBean(Language.class);
         System.out.println(language);
+        CardService bean = context.getBean(CardService.class);
+        bean.print();
     }
 
 }
