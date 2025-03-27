@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+-- changeset ilia.serhii:5
+
 insert into	 client (id, last_name, first_name, tax_code, email, address, phone, status)
 values  ('b2c2e8dd-6bce-4401-bd71-ffaed9d6ada0','Schmidt', 'Hans', 'DE123456789', 'h.schmidt@example.com', 'Berlin, Germany', '+49 30 1234567', 'ACTIVE'),
         ('20980395-20d0-4ea8-8e4b-de2252a028eb', 'Müller', 'Anna', 'DE987654321', 'a.mueller@example.com', 'Munich, Germany', '+49 89 7654321', 'INACTIVE'),
