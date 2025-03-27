@@ -7,6 +7,7 @@ import com.telran.springpractice.entity.enums.CardType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
 import com.telran.springpractice.repository.CardRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,7 @@ public class CardService {
         System.out.println("generateExpiryDate " + generateExpiryDate());
     }
 
+    @Transactional
     public Card save(String clientId, CardType cardType, CurrencyCode currency) {
         Account account = accountService.addDebitByClientId(clientId, currency);
         return cardRepository.save(new Card(null, cardType, generateCardNumber()
