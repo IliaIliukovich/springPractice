@@ -24,12 +24,8 @@ public class CurrencyController {
 
     @GetMapping
     public ResponseEntity<Map<String, BigDecimal>> getCurrencyRates() {
-        try {
-            Map<String, BigDecimal> rates = currencyService.getRates();
-            return ResponseEntity.ok(rates);
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't get currencies from third party API", e);
-        }
+        Map<String, BigDecimal> rates = currencyService.getRates();
+        return ResponseEntity.ok(rates);
     }
 
 

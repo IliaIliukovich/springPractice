@@ -2,22 +2,20 @@ package com.telran.springpractice.service;
 
 import com.telran.springpractice.dto.AccountSummaryDto;
 import com.telran.springpractice.entity.Account;
+import com.telran.springpractice.entity.Client;
 import com.telran.springpractice.entity.Transaction;
 import com.telran.springpractice.entity.enums.AccountStatus;
 import com.telran.springpractice.entity.enums.AccountType;
 import com.telran.springpractice.entity.enums.CurrencyCode;
-import com.telran.springpractice.exception.AccountNotFoundException;
+import com.telran.springpractice.exception.ResourceNotFoundException;
 import com.telran.springpractice.repository.AccountRepository;
 import com.telran.springpractice.repository.ClientRepository;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -61,19 +59,21 @@ public class AccountService {
         return repository.save(account);
     }
 
-    //типа DEBIT_CARD для заданного клиента в заданной валюте
+    @Transactional
     public Account addDebitByClientId(String clientId, CurrencyCode currencyCode){
         Account account;
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client with id = " + clientId + " not found"));
         account = new Account(
                 null,
-                "Standard",
+                "Debit card account",
                 AccountType.DEBIT_CARD,
                 AccountStatus.ACTIVE,
                 new BigDecimal("0"),
-                currencyCode,clientRepository.findById(clientId).get(),
+                currencyCode,
+                client,
                null,
                 null);
-
 
         return repository.save(account);
     }
@@ -86,17 +86,17 @@ public class AccountService {
             int to = account.getToTransactions().size();
             int transactionsQuantity = (from + to);
 
-            BigDecimal totalAmount = account.getFromTransactions().stream() // TODO
+            BigDecimal totalAmount = account.getFromTransactions().stream() // TODO different currencies here
                     .map(Transaction::getAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            BigDecimal totalAmountTwo = account.getToTransactions().stream() // TODO
+            BigDecimal totalAmountTwo = account.getToTransactions().stream() // TODO different currencies here
                     .map(Transaction::getAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
            return new AccountSummaryDto(transactionsQuantity, totalAmount, totalAmountTwo);
         }
-       throw  new AccountNotFoundException("Account not Found!!");
+       throw  new ResourceNotFoundException("Account not found!");
     }
 
 }

@@ -4,7 +4,7 @@ import com.telran.springpractice.entity.Account;
 import com.telran.springpractice.entity.Transaction;
 import com.telran.springpractice.entity.enums.TransactionStatus;
 import com.telran.springpractice.entity.enums.TransactionType;
-import com.telran.springpractice.exception.AccountNotFoundException;
+import com.telran.springpractice.exception.ResourceNotFoundException;
 import com.telran.springpractice.exception.NotEnoughAmountException;
 import com.telran.springpractice.repository.AccountRepository;
 import com.telran.springpractice.repository.TransactionRepository;
@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -64,7 +65,7 @@ public class TransactionService {
         Optional<Account> fromAccount = accountRepository.findById(from);
         Optional<Account> toAccount = accountRepository.findById(to);
         if (fromAccount.isEmpty() || toAccount.isEmpty()) {
-            throw new AccountNotFoundException("Account not found");
+            throw new ResourceNotFoundException("Account not found");
         }
 
         Account sender = fromAccount.get();
@@ -76,12 +77,13 @@ public class TransactionService {
         sender.setBalance(sender.getBalance().subtract(amount));
         accountRepository.save(sender);
 
+        Map<String, BigDecimal> currencyRates = currencyService.getRates();
         BigDecimal amountInRequiredCurrency = currencyService.convertAmountToRequiredCurrency(amount, sender.getCurrencyCode(),
-                receiver.getCurrencyCode());
+                receiver.getCurrencyCode(), currencyRates);
         receiver.setBalance(receiver.getBalance().add(amountInRequiredCurrency));
         accountRepository.save(receiver);
 
-        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "new Transaction",
+        Transaction transaction = new Transaction(null, TransactionType.CASH, amount, "Transfer between accounts",
                 TransactionStatus.NEW, sender.getCurrencyCode(),sender, receiver );
         return repository.save(transaction);
     }

@@ -21,7 +21,7 @@ public class Client {
     private String id;
 
     @OneToMany(mappedBy = "client")
-    private List<Account> account;
+    private List<Account> accounts;
 
     private String lastName;
 

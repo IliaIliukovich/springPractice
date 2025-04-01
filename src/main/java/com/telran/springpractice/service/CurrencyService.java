@@ -23,28 +23,28 @@ public class CurrencyService {
         this.objectMapper = objectMapper;
     }
 
-    public Map<String, BigDecimal> getRates() throws IOException {
-        String json = currencyApiClient.getExchangeRates();
-        ExchangeRatesResponse response = objectMapper.readValue(json, ExchangeRatesResponse.class);
-        return response.getExchangeRates();
+    public Map<String, BigDecimal> getRates() {
+        try {
+            String json = currencyApiClient.getExchangeRates();
+            ExchangeRatesResponse response = objectMapper.readValue(json, ExchangeRatesResponse.class);
+            return response.getExchangeRates();
+        } catch (IOException e) {
+            throw new ExchangeRateNotFoundException("Cannot get current currency rates from third party API");
+        }
     }
 
-    public BigDecimal convertAmountToRequiredCurrency(BigDecimal amount, CurrencyCode senderCurrencyCode, CurrencyCode receiverCurrencyCode) {
-        if (senderCurrencyCode.equals(receiverCurrencyCode)) return amount;
+    public BigDecimal convertAmountToRequiredCurrency(BigDecimal amount,
+                                                      CurrencyCode currencyFrom,
+                                                      CurrencyCode currencyTo,
+                                                      Map<String, BigDecimal> currencyRates) {
+        if (currencyFrom.equals(currencyTo)) return amount;
         BigDecimal bankFee = new BigDecimal("0.98");
-
-        Map<String, BigDecimal> currencyRates;
-        try {
-            currencyRates = getRates();
-        } catch (IOException e) {
-            throw new ExchangeRateNotFoundException("No exchange rate found for receiver currency: " + receiverCurrencyCode);
-        }
-        BigDecimal resultCurrencyAmount = currencyRates.get(senderCurrencyCode.name());
-        if (senderCurrencyCode != CurrencyCode.USD) {
+        BigDecimal resultCurrencyAmount = currencyRates.get(currencyFrom.name());
+        if (currencyFrom != CurrencyCode.USD) {
             resultCurrencyAmount = amount.divide(resultCurrencyAmount, 10, RoundingMode.HALF_UP);
         }
-        if (receiverCurrencyCode != CurrencyCode.USD) {
-            resultCurrencyAmount = amount.multiply(currencyRates.get(receiverCurrencyCode.name()));
+        if (currencyTo != CurrencyCode.USD) {
+            resultCurrencyAmount = amount.multiply(currencyRates.get(currencyTo.name()));
         }
         resultCurrencyAmount = resultCurrencyAmount.multiply(bankFee);
         return resultCurrencyAmount.setScale(2, RoundingMode.DOWN);

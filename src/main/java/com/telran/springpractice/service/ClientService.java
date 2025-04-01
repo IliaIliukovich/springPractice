@@ -4,6 +4,7 @@ import com.telran.springpractice.dto.ClientStatisticDto;
 import com.telran.springpractice.entity.Account;
 import com.telran.springpractice.entity.Client;
 import com.telran.springpractice.entity.enums.CurrencyCode;
+import com.telran.springpractice.exception.ResourceNotFoundException;
 import com.telran.springpractice.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -85,19 +88,24 @@ public class ClientService {
     }
 
     public ClientStatisticDto getClientStatistic(String id) {
-        BigDecimal result = BigDecimal.ZERO;
-        Client client = repository.findById(id).get();
-        List<Account> account = client.getAccount();
-        for (Account account1 : account) {
-            result = result.add(currencyService.convertAmountToRequiredCurrency
-                    (account1.getBalance(),account1.getCurrencyCode(), CurrencyCode.USD));
-        }
+        Client client = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id = " + id + " not found"));
+        BigDecimal generalSum = getGeneralSum(client);
+        Map<CurrencyCode, BigDecimal> balanceByCurrency = getBalanceByCurrency(client);
+        return new ClientStatisticDto(generalSum, balanceByCurrency);
+    }
 
-        //Map<CurrencyCode, BigDecimal> getSum = new HashMap<>(); // TODO
+    private BigDecimal getGeneralSum(Client client) {
+        Map<String, BigDecimal> currencyRates = currencyService.getRates();
+        BigDecimal generalSum = client.getAccounts().stream().map(a -> currencyService
+                .convertAmountToRequiredCurrency(a.getBalance(),a.getCurrencyCode(), CurrencyCode.USD, currencyRates))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return generalSum;
+    }
 
-        //getSum.forEach((k, v) -> );
-
-        ClientStatisticDto clientStatisticDto = new ClientStatisticDto(result, null);
-        return clientStatisticDto;
+    private static Map<CurrencyCode, BigDecimal> getBalanceByCurrency(Client client) {
+        Map<CurrencyCode, BigDecimal> balanceByCurrency = client.getAccounts().stream()
+                .collect(Collectors.groupingBy(Account::getCurrencyCode,
+                        Collectors.mapping(Account::getBalance, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+        return balanceByCurrency;
     }
 }

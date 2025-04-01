@@ -2,15 +2,12 @@ package com.telran.springpractice.controller;
 
 import com.telran.springpractice.entity.Transaction;
 import com.telran.springpractice.entity.enums.TransactionType;
-import com.telran.springpractice.exception.AccountNotFoundException;
-import com.telran.springpractice.exception.NotEnoughAmountException;
 import com.telran.springpractice.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
